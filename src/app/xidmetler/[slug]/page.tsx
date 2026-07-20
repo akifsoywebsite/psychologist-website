@@ -21,7 +21,7 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 import { db } from "@/lib/firebase";
 import type { Service } from "@/lib/types";
 
@@ -115,7 +115,17 @@ export default async function ServicePage({ params }: PageProps) {
         <div
           className="blog-content mt-4"
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(service.description),
+            __html: sanitizeHtml(service.description, {
+              allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+                "img",
+                "h2",
+                "h3",
+              ]),
+              allowedAttributes: {
+                ...sanitizeHtml.defaults.allowedAttributes,
+                img: ["src", "alt", "width", "height"],
+              },
+            }),
           }}
         />
 

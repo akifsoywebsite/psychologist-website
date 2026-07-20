@@ -13,7 +13,7 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { cache } from "react";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 import { db } from "@/lib/firebase";
 import type { Blog, Category } from "@/lib/types";
 
@@ -155,7 +155,17 @@ export default async function BlogPostPage({ params }: PageProps) {
         <div
           className="blog-content mt-8"
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(blog.content),
+            __html: sanitizeHtml(blog.content, {
+              allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+                "img",
+                "h2",
+                "h3",
+              ]),
+              allowedAttributes: {
+                ...sanitizeHtml.defaults.allowedAttributes,
+                img: ["src", "alt", "width", "height"],
+              },
+            }),
           }}
         />
 
