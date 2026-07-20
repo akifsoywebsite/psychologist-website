@@ -47,6 +47,23 @@
   --sidebar-primary-foreground: #ffffff;
 }
 
+.dashboard-theme {
+  --background: #f0efe9;
+  --card: #ffffff;
+  --sidebar: #2d3730;
+  --sidebar-foreground: #f0efe9;
+  --sidebar-accent: #3d4a40;
+  --sidebar-border: #414d43;
+  --border: #ddd9cf;
+  --foreground: #1c2019;
+  --muted: #e6e3d9;
+  --muted-foreground: #6b6f64;
+  --accent: #b7c2ac;
+  --primary: #5f7565;
+  --primary-foreground: #ffffff;
+  --secondary: #c3ccb3;
+}
+
 .dark {
   --card: #121212;
   --ring: #7c9082;

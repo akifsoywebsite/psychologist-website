@@ -1,26 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Baby,
-  GraduationCap,
-  Home,
-  Sparkles,
-  UserRound,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import type { Service } from "@/lib/types";
-
-const iconMap: Record<string, LucideIcon> = {
-  child: Baby,
-  teen: UserRound,
-  parent: Users,
-  family: Home,
-  school: GraduationCap,
-};
 
 const AUTO_SCROLL_SPEED = 0.5;
 const TOUCH_RESUME_DELAY = 3000;
@@ -94,26 +78,36 @@ export default function ServicesCarousel({ services }: { services: Service[] }) 
       onTouchEnd={handleTouchEnd}
       className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"
     >
-      {services.map((service) => {
-        const Icon = iconMap[service.icon] ?? Sparkles;
+      {services.map((service) => (
+        <Link
+          key={service.id}
+          href={`/xidmetler/${service.slug}`}
+          className="flex w-[260px] shrink-0 snap-start flex-col overflow-hidden rounded-[var(--radius)] border border-border bg-card shadow-sm transition-shadow hover:shadow-md md:w-[300px]"
+        >
+          <div className="relative aspect-[16/10] w-full bg-accent">
+            {service.imageUrl ? (
+              <Image
+                src={service.imageUrl}
+                alt={service.title}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <Sparkles className="text-primary" size={32} />
+              </div>
+            )}
+          </div>
 
-        return (
-          <Link
-            key={service.id}
-            href={`/xidmetler/${service.slug}`}
-            className="flex w-[260px] shrink-0 snap-start flex-col gap-3 rounded-[var(--radius)] border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md md:w-[300px]"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent">
-              <Icon className="text-primary" size={22} />
-            </div>
+          <div className="flex flex-1 flex-col gap-3 p-6">
             <h3 className="font-semibold text-foreground">{service.title}</h3>
             <p className="text-sm text-muted-foreground">{service.summary}</p>
             <div className="mt-auto flex justify-end">
               <ArrowRight className="text-primary" size={18} />
             </div>
-          </Link>
-        );
-      })}
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

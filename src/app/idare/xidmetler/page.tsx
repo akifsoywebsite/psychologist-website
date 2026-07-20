@@ -14,15 +14,15 @@ import { Pencil, Trash2, X } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { slugify } from "@/lib/slugify";
 import type { Service } from "@/lib/types";
-
-const iconOptions = ["child", "teen", "parent", "family", "school"];
+import ImageUpload from "@/components/dashboard/image-upload";
+import RichTextEditor from "@/components/dashboard/rich-text-editor";
 
 type ServiceForm = {
   title: string;
   slug: string;
   summary: string;
+  imageUrl: string;
   description: string;
-  icon: string;
   order: number;
 };
 
@@ -30,8 +30,8 @@ const emptyForm: ServiceForm = {
   title: "",
   slug: "",
   summary: "",
+  imageUrl: "",
   description: "",
-  icon: iconOptions[0],
   order: 1,
 };
 
@@ -89,8 +89,8 @@ export default function ServicesAdminPage() {
       title: service.title,
       slug: service.slug,
       summary: service.summary,
+      imageUrl: service.imageUrl ?? "",
       description: service.description,
-      icon: service.icon,
       order: service.order,
     });
     setIsSlugTouched(true);
@@ -121,12 +121,12 @@ export default function ServicesAdminPage() {
 
     setIsSaving(true);
     try {
-      const data: Omit<Service, "id"> = {
+      const data: Omit<Service, "id" | "icon"> = {
         title: form.title.trim(),
         slug,
         summary: form.summary.trim(),
+        imageUrl: form.imageUrl.trim(),
         description: form.description.trim(),
-        icon: form.icon,
         order: form.order,
       };
 
@@ -217,7 +217,7 @@ export default function ServicesAdminPage() {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[var(--radius)] bg-card p-6">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[var(--radius)] bg-card p-6">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-serif text-lg font-bold text-foreground">
                 {isEditing ? "Xidməti Redaktə Et" : "Yeni Xidmət"}
@@ -279,39 +279,27 @@ export default function ServicesAdminPage() {
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-foreground">
-                  Ətraflı Təsvir
+                  Şəkil (istəyə görə)
                 </label>
-                <textarea
-                  value={form.description}
-                  onChange={(event) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      description: event.target.value,
-                    }))
+                <ImageUpload
+                  value={form.imageUrl}
+                  onChange={(url) =>
+                    setForm((prev) => ({ ...prev, imageUrl: url }))
                   }
-                  rows={4}
-                  required
-                  className="w-full rounded-[var(--radius)] border border-border bg-input px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  storagePath="service-images"
                 />
               </div>
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-foreground">
-                  İkon
+                  Ətraflı Məlumat (Description)
                 </label>
-                <select
-                  value={form.icon}
-                  onChange={(event) =>
-                    setForm((prev) => ({ ...prev, icon: event.target.value }))
+                <RichTextEditor
+                  content={form.description}
+                  onChange={(html) =>
+                    setForm((prev) => ({ ...prev, description: html }))
                   }
-                  className="w-full rounded-[var(--radius)] border border-border bg-input px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                >
-                  {iconOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
 
               <div>

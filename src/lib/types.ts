@@ -6,6 +6,7 @@ export interface Service {
   description: string;
   icon: string;
   order: number;
+  imageUrl?: string;
 }
 
 export interface Blog {

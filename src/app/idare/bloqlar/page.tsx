@@ -11,7 +11,8 @@ import {
   setDoc,
   type Timestamp,
 } from "firebase/firestore";
-import { Pencil, Trash2, X } from "lucide-react";
+import Link from "next/link";
+import { Pencil, Tags, Trash2, X } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { slugify } from "@/lib/slugify";
 import type { Blog, Category } from "@/lib/types";
@@ -235,6 +236,13 @@ export default function BlogsAdminPage() {
           <p className="mt-1 text-muted-foreground">
             Bütün bloq yazılarını idarə edin.
           </p>
+          <Link
+            href="/idare/kateqoriyalar"
+            className="mt-2 inline-flex items-center gap-2 text-sm text-primary hover:underline"
+          >
+            <Tags size={16} />
+            Kateqoriyaları idarə et
+          </Link>
         </div>
         <button
           type="button"

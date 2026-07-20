@@ -27,7 +27,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="dashboard-theme flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm rounded-[var(--radius)] border border-border bg-card p-8 shadow-sm">
         <div className="mb-6 text-center">
           <p className="font-serif text-lg font-semibold text-foreground">

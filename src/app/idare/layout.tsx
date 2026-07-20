@@ -12,7 +12,6 @@ import {
   LogOut,
   Menu,
   Newspaper,
-  Tags,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -22,7 +21,6 @@ const navLinks: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/idare", label: "Ana Səhifə", icon: LayoutDashboard },
   { href: "/idare/xidmetler", label: "Xidmətlər", icon: Briefcase },
   { href: "/idare/bloqlar", label: "Bloqlar", icon: Newspaper },
-  { href: "/idare/kateqoriyalar", label: "Kateqoriyalar", icon: Tags },
   { href: "/idare/mezmun", label: "Sayt Məzmunu", icon: FileText },
 ];
 
@@ -49,10 +47,10 @@ function SidebarNav({
             key={href}
             href={href}
             onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-[var(--radius)] px-3 py-2 text-sm transition-colors ${
+            className={`flex items-center gap-3 rounded-[var(--radius)] border-l-4 px-3 py-2 text-sm transition-colors ${
               active
-                ? "bg-accent text-foreground"
-                : "text-muted-foreground hover:bg-accent/50"
+                ? "border-primary bg-sidebar-accent text-sidebar-foreground"
+                : "border-transparent text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
             }`}
           >
             <Icon size={18} />
@@ -115,13 +113,15 @@ export default function IdareLayout({
   };
 
   return (
-    <div className="flex flex-1 bg-background">
-      <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card px-4 py-6 md:flex">
+    <div className="dashboard-theme flex flex-1 bg-background">
+      <aside className="hidden w-64 shrink-0 flex-col bg-sidebar px-4 py-6 text-sidebar-foreground shadow-lg md:flex">
         <div className="mb-8">
-          <p className="font-serif font-semibold text-foreground">
+          <p className="font-serif font-semibold text-sidebar-foreground">
             Murad Akifsoy
           </p>
-          <p className="text-xs text-muted-foreground">İdarəetmə Paneli</p>
+          <p className="text-xs text-sidebar-foreground/70">
+            İdarəetmə Paneli
+          </p>
         </div>
 
         <SidebarNav pathname={pathname} />
@@ -129,7 +129,7 @@ export default function IdareLayout({
         <button
           type="button"
           onClick={handleLogout}
-          className="mt-auto flex items-center gap-3 rounded-[var(--radius)] px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/50"
+          className="mt-auto flex items-center gap-3 rounded-[var(--radius)] px-3 py-2 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
         >
           <LogOut size={18} />
           Çıxış
@@ -160,13 +160,13 @@ export default function IdareLayout({
 
       {isMounted && isMenuOpen
         ? createPortal(
-            <div className="fixed inset-0 z-50 flex flex-col bg-background md:hidden">
-              <div className="flex items-center justify-between border-b border-border px-4 py-4">
+            <div className="dashboard-theme fixed inset-0 z-50 flex flex-col bg-sidebar text-sidebar-foreground md:hidden">
+              <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-4">
                 <div>
-                  <p className="font-serif font-semibold text-foreground">
+                  <p className="font-serif font-semibold text-sidebar-foreground">
                     Murad Akifsoy
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-sidebar-foreground/70">
                     İdarəetmə Paneli
                   </p>
                 </div>
@@ -174,7 +174,7 @@ export default function IdareLayout({
                   type="button"
                   onClick={() => setIsMenuOpen(false)}
                   aria-label="Menyunu bağla"
-                  className="text-foreground"
+                  className="text-sidebar-foreground"
                 >
                   <X size={24} />
                 </button>
@@ -187,14 +187,14 @@ export default function IdareLayout({
                 />
               </div>
 
-              <div className="border-t border-border px-4 py-4">
+              <div className="border-t border-sidebar-border px-4 py-4">
                 <button
                   type="button"
                   onClick={() => {
                     setIsMenuOpen(false);
                     handleLogout();
                   }}
-                  className="flex w-full items-center gap-3 rounded-[var(--radius)] px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/50"
+                  className="flex w-full items-center gap-3 rounded-[var(--radius)] px-3 py-2 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
                 >
                   <LogOut size={18} />
                   Çıxış

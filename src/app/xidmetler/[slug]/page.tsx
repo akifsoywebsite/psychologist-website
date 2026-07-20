@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
@@ -20,6 +21,7 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
+import DOMPurify from "isomorphic-dompurify";
 import { db } from "@/lib/firebase";
 import type { Service } from "@/lib/types";
 
@@ -83,7 +85,6 @@ export default async function ServicePage({ params }: PageProps) {
   if (!service) notFound();
 
   const otherServices = await getOtherServices(service.id);
-  const Icon = iconMap[service.icon] ?? Sparkles;
 
   return (
     <main className="flex flex-1 flex-col bg-background">
@@ -96,17 +97,27 @@ export default async function ServicePage({ params }: PageProps) {
           Bütün xidmətlər
         </Link>
 
-        <div className="mt-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent">
-          <Icon className="text-primary" size={36} />
-        </div>
-
         <h1 className="mt-6 font-serif text-3xl font-bold text-foreground md:text-4xl">
           {service.title}
         </h1>
 
-        <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
-          {service.description}
-        </p>
+        {service.imageUrl && (
+          <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-[var(--radius)]">
+            <Image
+              src={service.imageUrl}
+              alt={service.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        <div
+          className="blog-content mt-4"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(service.description),
+          }}
+        />
 
         <div className="mt-10 rounded-[var(--radius)] border border-border bg-card p-8 text-center">
           <h2 className="font-serif text-xl font-bold text-foreground">
