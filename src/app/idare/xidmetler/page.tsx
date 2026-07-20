@@ -24,6 +24,7 @@ type ServiceForm = {
   imageUrl: string;
   description: string;
   order: number;
+  status: "draft" | "published";
 };
 
 const emptyForm: ServiceForm = {
@@ -33,6 +34,7 @@ const emptyForm: ServiceForm = {
   imageUrl: "",
   description: "",
   order: 1,
+  status: "draft",
 };
 
 async function fetchServices(): Promise<Service[]> {
@@ -92,6 +94,7 @@ export default function ServicesAdminPage() {
       imageUrl: service.imageUrl ?? "",
       description: service.description,
       order: service.order,
+      status: service.status ?? "published",
     });
     setIsSlugTouched(true);
     setIsModalOpen(true);
@@ -128,6 +131,7 @@ export default function ServicesAdminPage() {
         imageUrl: form.imageUrl.trim(),
         description: form.description.trim(),
         order: form.order,
+        status: form.status,
       };
 
       await setDoc(doc(db, "services", slug), data);
@@ -187,7 +191,20 @@ export default function ServicesAdminPage() {
               className="flex items-center justify-between gap-4 rounded-[var(--radius)] border border-border bg-card p-4"
             >
               <div className="min-w-0">
-                <p className="font-medium text-foreground">{service.title}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium text-foreground">
+                    {service.title}
+                  </p>
+                  {service.status === "draft" ? (
+                    <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                      Qaralama
+                    </span>
+                  ) : (
+                    <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                      Dərc edilib
+                    </span>
+                  )}
+                </div>
                 <p className="line-clamp-1 text-sm text-muted-foreground">
                   {service.summary}
                 </p>
@@ -318,6 +335,25 @@ export default function ServicesAdminPage() {
                   required
                   className="w-full rounded-[var(--radius)] border border-border bg-input px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium text-foreground">
+                  Status
+                </label>
+                <select
+                  value={form.status}
+                  onChange={(event) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      status: event.target.value as "draft" | "published",
+                    }))
+                  }
+                  className="w-full rounded-[var(--radius)] border border-border bg-input px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  <option value="draft">Qaralama</option>
+                  <option value="published">Dərc edilmiş</option>
+                </select>
               </div>
 
               <div className="flex gap-3">

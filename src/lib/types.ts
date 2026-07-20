@@ -7,6 +7,7 @@ export interface Service {
   icon: string;
   order: number;
   imageUrl?: string;
+  status: "draft" | "published";
 }
 
 export interface Blog {
@@ -18,6 +19,7 @@ export interface Blog {
   category: string;
   coverImage: string;
   createdAt: Date;
+  status: "draft" | "published";
 }
 
 export interface Category {

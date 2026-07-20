@@ -57,7 +57,8 @@ async function getOtherServices(currentId: string): Promise<Service[]> {
       id: doc.id,
       ...(doc.data() as Omit<Service, "id">),
     }))
-    .filter((service) => service.id !== currentId);
+    .filter((service) => service.id !== currentId)
+    .filter((service) => service.status !== "draft");
 }
 
 type PageProps = {
@@ -82,7 +83,7 @@ export default async function ServicePage({ params }: PageProps) {
   const { slug } = await params;
   const service = await getService(slug);
 
-  if (!service) notFound();
+  if (!service || service.status === "draft") notFound();
 
   const otherServices = await getOtherServices(service.id);
 

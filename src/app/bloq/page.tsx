@@ -23,7 +23,7 @@ async function getBlogs(): Promise<Blog[]> {
   );
   const snapshot = await getDocs(blogsQuery);
 
-  return snapshot.docs.map((doc) => {
+  const blogs = snapshot.docs.map((doc) => {
     const data = doc.data() as Omit<Blog, "id" | "createdAt"> & {
       createdAt: Timestamp;
     };
@@ -37,6 +37,8 @@ async function getBlogs(): Promise<Blog[]> {
       createdAt: data.createdAt.toDate(),
     };
   });
+
+  return blogs.filter((blog) => blog.status !== "draft");
 }
 
 async function getCategories(): Promise<Category[]> {

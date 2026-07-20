@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
 import {
   Briefcase,
+  ExternalLink,
   FileText,
   LayoutDashboard,
   LogOut,
@@ -122,6 +123,13 @@ export default function IdareLayout({
           <p className="text-xs text-sidebar-foreground/70">
             İdarəetmə Paneli
           </p>
+          <Link
+            href="/"
+            className="mt-3 flex items-center gap-2 rounded-[var(--radius)] px-3 py-2 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+          >
+            <ExternalLink size={16} />
+            Sayta Qayıt
+          </Link>
         </div>
 
         <SidebarNav pathname={pathname} />
@@ -181,6 +189,15 @@ export default function IdareLayout({
               </div>
 
               <div className="flex-1 px-4 py-6">
+                <Link
+                  href="/"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="mb-4 flex items-center gap-2 rounded-[var(--radius)] px-3 py-2 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                >
+                  <ExternalLink size={16} />
+                  Sayta Qayıt
+                </Link>
+
                 <SidebarNav
                   pathname={pathname}
                   onNavigate={() => setIsMenuOpen(false)}

@@ -65,7 +65,7 @@ async function getAllBlogsSorted(): Promise<Blog[]> {
   );
   const snapshot = await getDocs(blogsQuery);
 
-  return snapshot.docs.map((doc) => {
+  const blogs = snapshot.docs.map((doc) => {
     const data = doc.data() as Omit<Blog, "id" | "createdAt"> & {
       createdAt: Timestamp;
     };
@@ -76,6 +76,8 @@ async function getAllBlogsSorted(): Promise<Blog[]> {
       createdAt: data.createdAt.toDate(),
     };
   });
+
+  return blogs.filter((blog) => blog.status !== "draft");
 }
 
 type PageProps = {
@@ -100,7 +102,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const blog = await getBlog(slug);
 
-  if (!blog) notFound();
+  if (!blog || blog.status === "draft") notFound();
 
   const categories = await getCategories();
   const categoryName =

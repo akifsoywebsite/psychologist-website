@@ -58,6 +58,7 @@ type BlogForm = {
   category: string;
   coverImage: string;
   date: string;
+  status: "draft" | "published";
 };
 
 function makeEmptyForm(defaultCategory: string): BlogForm {
@@ -69,6 +70,7 @@ function makeEmptyForm(defaultCategory: string): BlogForm {
     category: defaultCategory,
     coverImage: "",
     date: toDateInputValue(new Date()),
+    status: "draft",
   };
 }
 
@@ -149,6 +151,7 @@ export default function BlogsAdminPage() {
       category: blog.category,
       coverImage: blog.coverImage,
       date: toDateInputValue(blog.createdAt),
+      status: blog.status ?? "published",
     });
     setIsSlugTouched(true);
     setCoverImageError("");
@@ -197,6 +200,7 @@ export default function BlogsAdminPage() {
         category: form.category,
         coverImage: form.coverImage.trim(),
         createdAt: fromDateInputValue(form.date),
+        status: form.status,
       };
 
       await setDoc(doc(db, "blogs", slug), data);
@@ -265,7 +269,18 @@ export default function BlogsAdminPage() {
               className="flex items-center justify-between gap-4 rounded-[var(--radius)] border border-border bg-card p-4"
             >
               <div className="min-w-0">
-                <p className="font-medium text-foreground">{blog.title}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium text-foreground">{blog.title}</p>
+                  {blog.status === "draft" ? (
+                    <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                      Qaralama
+                    </span>
+                  ) : (
+                    <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                      Dərc edilib
+                    </span>
+                  )}
+                </div>
                 <div className="mt-1 flex items-center gap-2">
                   <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
                     {categoryName(blog.category)}
@@ -433,6 +448,25 @@ export default function BlogsAdminPage() {
                     setForm((prev) => ({ ...prev, content: html }))
                   }
                 />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium text-foreground">
+                  Status
+                </label>
+                <select
+                  value={form.status}
+                  onChange={(event) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      status: event.target.value as "draft" | "published",
+                    }))
+                  }
+                  className="w-full rounded-[var(--radius)] border border-border bg-input px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  <option value="draft">Qaralama</option>
+                  <option value="published">Dərc edilmiş</option>
+                </select>
               </div>
 
               <div className="flex gap-3">

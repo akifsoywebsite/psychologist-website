@@ -9,10 +9,12 @@ async function getServices(): Promise<Service[]> {
   const servicesQuery = query(collection(db, "services"), orderBy("order", "asc"));
   const snapshot = await getDocs(servicesQuery);
 
-  return snapshot.docs.map((doc) => ({
+  const services = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...(doc.data() as Omit<Service, "id">),
   }));
+
+  return services.filter((service) => service.status !== "draft");
 }
 
 export default async function ServicesSection() {
