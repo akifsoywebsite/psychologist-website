@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { Camera, ThumbsUp, type LucideIcon } from "lucide-react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import type { ContactContent } from "@/lib/types";
+import SocialLinks from "@/components/shared/social-links";
 
 const navLinks = [
   { href: "/", label: "Ana Səhifə" },
@@ -9,12 +12,24 @@ const navLinks = [
   { href: "/elaqe", label: "Əlaqə" },
 ];
 
-const socialLinks: { icon: LucideIcon; label: string; href: string }[] = [
-  { icon: Camera, label: "Instagram", href: "#" },
-  { icon: ThumbsUp, label: "Facebook", href: "#" },
-];
+const defaultContact: ContactContent = {
+  phone: "+994 50 123 45 67",
+  email: "info@muradakifsoy.az",
+  address: "Bakı, Azərbaycan",
+  workingHours: "Bazar ertəsi - Cümə, 09:00 - 18:00",
+  instagramUrl: "#",
+  facebookUrl: "#",
+};
 
-export default function Footer() {
+async function getContactContent(): Promise<ContactContent> {
+  const snapshot = await getDoc(doc(db, "siteContent", "contact"));
+  if (!snapshot.exists()) return defaultContact;
+  return snapshot.data() as ContactContent;
+}
+
+export default async function Footer() {
+  const contact = await getContactContent();
+
   return (
     <footer className="border-t border-border bg-card text-foreground">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row md:items-start md:justify-between md:gap-4 md:px-8">
@@ -39,20 +54,7 @@ export default function Footer() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          {socialLinks.map(({ icon: Icon, label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              <Icon size={18} />
-            </a>
-          ))}
-        </div>
+        <SocialLinks contact={contact} />
       </div>
 
       <div className="border-t border-border px-4 py-4 text-center text-xs text-muted-foreground md:px-8">

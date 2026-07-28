@@ -42,14 +42,22 @@ export interface ContactContent {
   email: string;
   address: string;
   workingHours: string;
-  instagramUrl: string;
-  facebookUrl: string;
-  linkedinUrl: string;
+  instagramUrl?: string;
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  tiktokUrl?: string;
+  whatsappUrl?: string;
+  youtubeUrl?: string;
+  mapQuery?: string;
+  homeCtaHeading?: string;
+  homeCtaText?: string;
+  homeCtaButtonText?: string;
 }
 
 export interface AboutContent {
   eyebrow: string;
   heading: string;
-  bio: string;
+  bio: string; // rich HTML content from the editor
   imageUrl: string;
+  skills: string[];
 }

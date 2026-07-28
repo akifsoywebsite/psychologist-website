@@ -25,13 +25,17 @@ function formatDate(createdAt: Blog["createdAt"]): string {
 export default function BlogCard({
   blog,
   className = "",
+  hidden = false,
 }: {
   blog: Blog;
   className?: string;
+  hidden?: boolean;
 }) {
   return (
     <Link
       href={`/bloq/${blog.slug}`}
+      aria-hidden={hidden || undefined}
+      tabIndex={hidden ? -1 : undefined}
       className={`flex flex-col overflow-hidden rounded-[var(--radius)] border border-border bg-card shadow-sm transition-shadow hover:shadow-md ${className}`}
     >
       <div className="relative aspect-[16/10] w-full bg-accent">

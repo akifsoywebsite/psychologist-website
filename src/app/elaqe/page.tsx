@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
 import { doc, getDoc } from "firebase/firestore";
-import {
-  Briefcase,
-  Camera,
-  Clock,
-  Mail,
-  Map,
-  MapPin,
-  Phone,
-  ThumbsUp,
-  type LucideIcon,
-} from "lucide-react";
+import { Clock, Mail, Map, MapPin, Phone, type LucideIcon } from "lucide-react";
 import { db } from "@/lib/firebase";
 import type { ContactContent } from "@/lib/types";
+import SocialLinks from "@/components/shared/social-links";
 
 export const metadata: Metadata = {
   title: "Əlaqə | Murad Akifsoy",
@@ -74,27 +65,6 @@ export default async function ContactPage() {
     },
   ];
 
-  const socialLinks: { icon: LucideIcon; label: string; value: string; href: string }[] = [
-    {
-      icon: Camera,
-      label: "Instagram",
-      value: "@murad.akifsoy",
-      href: contact.instagramUrl,
-    },
-    {
-      icon: ThumbsUp,
-      label: "Facebook",
-      value: "Murad Akifsoy",
-      href: contact.facebookUrl,
-    },
-    {
-      icon: Briefcase,
-      label: "LinkedIn",
-      value: "Murad Akifsoy",
-      href: contact.linkedinUrl,
-    },
-  ];
-
   return (
     <main className="flex flex-1 flex-col bg-background">
       <div className="mx-auto w-full max-w-5xl px-4 py-16 md:px-8 md:py-24">
@@ -151,34 +121,28 @@ export default async function ContactPage() {
               Sosial Media
             </h2>
 
-            {socialLinks.map(({ icon: Icon, label, value, href }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${cardClassName} transition-colors hover:border-primary`}
-              >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent">
-                  <Icon className="text-primary" size={22} />
-                </span>
-                <span className="flex flex-col">
-                  <span className="text-sm text-muted-foreground">
-                    {label}
-                  </span>
-                  <span className="text-lg font-medium text-foreground">
-                    {value}
-                  </span>
-                </span>
-              </a>
-            ))}
+            <SocialLinks contact={contact} className="flex flex-wrap gap-3" />
 
-            <div className="flex aspect-video flex-col items-center justify-center gap-2 rounded-[var(--radius)] bg-accent">
-              <Map className="text-primary" size={28} />
-              <p className="text-sm text-muted-foreground">
-                Xəritə tezliklə əlavə olunacaq
-              </p>
-            </div>
+            {contact.mapQuery ? (
+              <div className="aspect-video overflow-hidden rounded-[var(--radius)]">
+                <iframe
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(contact.mapQuery)}&output=embed`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+            ) : (
+              <div className="flex aspect-video flex-col items-center justify-center gap-2 rounded-[var(--radius)] bg-accent">
+                <Map className="text-primary" size={28} />
+                <p className="text-sm text-muted-foreground">
+                  Xəritə tezliklə əlavə olunacaq
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

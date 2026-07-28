@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Lora } from "next/font/google";
 import SiteChrome from "@/components/layout/site-chrome";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -31,7 +33,9 @@ export default function RootLayout({
       className={`${montserrat.variable} ${lora.variable} min-h-screen antialiased`}
     >
       <body className="flex min-h-screen flex-col font-sans">
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome header={<Header />} footer={<Footer />}>
+          {children}
+        </SiteChrome>
       </body>
     </html>
   );

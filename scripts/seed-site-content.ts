@@ -45,14 +45,31 @@ const contact = {
   workingHours: "Bazar ertəsi - Cümə, 09:00 - 18:00",
   instagramUrl: "#",
   facebookUrl: "#",
-  linkedinUrl: "#",
+  linkedinUrl: "",
+  tiktokUrl: "",
+  whatsappUrl: "",
+  youtubeUrl: "",
+  homeCtaHeading: "Mənimlə Əlaqə Saxlayın",
+  homeCtaText:
+    "Sual və təkliflərinizi gözləyirəm. Görüş təyin etmək üçün mənə müraciət edin.",
+  homeCtaButtonText: "Əlaqəyə Keç",
 };
 
 const about = {
   eyebrow: "Haqqımda",
   heading: "Murad Akifsoy ilə Tanış Olun",
-  bio: "Bura tezliklə ətraflı məlumat əlavə olunacaq.",
+  bio: "<p>Zaqatala Rayonunun Suvagil kəndində anadan olmuşam. 2010-2014-cü illərdə sosial-psixoloji xidmət üzrə bakalavr dərəcəmi Gəncə Dövlət Universitetində almışam. Bundan sonra uşaq və yeniyetmə psixologiyası sahəsində ixtisaslaşaraq, ailələrə və gənclərə peşəkar dəstək göstərmək üçün bir neçə beynəlxalq sertifikat proqramında iştirak etmişəm.</p><p>Hazırda fərdi və qrup məşğələləri vasitəsilə uşaqların emosional inkişafına, valideyn-övlad münasibətlərinin möhkəmləndirilməsinə və böhran vəziyyətlərinin idarə olunmasına dəstək olur, elmi əsaslara söykənən müasir metodlardan istifadə edirəm.</p>",
   imageUrl: "/murad-a.png",
+  skills: [
+    "Uşaq Psixologiyası",
+    "Ailə Terapiyası",
+    "Davranış Analizi",
+    "Emosional Dəstək",
+    "Yeniyetmə Psixologiyası",
+    "Valideyn Məsləhətləşməsi",
+    "Krizis İdarəetməsi",
+    "Bilişsel Davranış Terapiyası",
+  ],
 };
 
 async function seed() {
