@@ -24,6 +24,7 @@ import {
 import sanitizeHtml from "sanitize-html";
 import { db } from "@/lib/firebase";
 import type { Service } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 
 const iconMap: Record<string, LucideIcon> = {
   child: Baby,
@@ -73,9 +74,18 @@ export async function generateMetadata({
 
   if (!service) return {};
 
+  const title = `${service.title} | Murad Akifsoy`;
+  const image = service.imageUrl ?? "/murad-a.png";
+
   return {
-    title: `${service.title} | Murad Akifsoy`,
+    title,
     description: service.summary,
+    openGraph: {
+      title,
+      description: service.summary,
+      url: `${SITE_URL}/xidmetler/${service.slug}`,
+      images: [image],
+    },
   };
 }
 

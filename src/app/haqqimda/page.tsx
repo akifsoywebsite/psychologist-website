@@ -5,12 +5,22 @@ import { Clock, Mail, MapPin, Phone, type LucideIcon } from "lucide-react";
 import sanitizeHtml from "sanitize-html";
 import { db } from "@/lib/firebase";
 import type { AboutContent, ContactContent } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 import SocialLinks from "@/components/shared/social-links";
 
+const title = "Haqqımda | Murad Akifsoy";
+const description =
+  "Murad Akifsoy haqqında - təhsil, təcrübə və uşaq-yeniyetmə psixologiyası sahəsindəki bacarıqlar.";
+
 export const metadata: Metadata = {
-  title: "Haqqımda | Murad Akifsoy",
-  description:
-    "Murad Akifsoy haqqında - təhsil, təcrübə və uşaq-yeniyetmə psixologiyası sahəsindəki bacarıqlar.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${SITE_URL}/haqqimda`,
+    images: ["/murad-a.png"],
+  },
 };
 
 const defaultAbout: AboutContent = {
@@ -181,7 +191,10 @@ export default async function AboutPage() {
             })}
           </div>
 
-          <SocialLinks contact={contact} className="mt-6 flex flex-wrap gap-3" />
+          <SocialLinks
+            contact={contact}
+            className="mt-6 flex flex-wrap gap-3"
+          />
         </div>
       </div>
     </main>

@@ -8,12 +8,22 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { Blog, Category } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 import BlogList from "@/components/blog/blog-list";
 
+const title = "Bloq | Murad Akifsoy";
+const description =
+  "Uşaq və yeniyetmə psixologiyası mövzusunda faydalı məqalələr və tövsiyələr.";
+
 export const metadata: Metadata = {
-  title: "Bloq | Murad Akifsoy",
-  description:
-    "Uşaq və yeniyetmə psixologiyası mövzusunda faydalı məqalələr və tövsiyələr.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${SITE_URL}/bloq`,
+    images: ["/murad-a.png"],
+  },
 };
 
 async function getBlogs(): Promise<Blog[]> {
@@ -47,10 +57,7 @@ async function getCategories(): Promise<Category[]> {
 }
 
 export default async function BlogPage() {
-  const [blogs, categories] = await Promise.all([
-    getBlogs(),
-    getCategories(),
-  ]);
+  const [blogs, categories] = await Promise.all([getBlogs(), getCategories()]);
 
   return (
     <main className="flex flex-1 flex-col bg-background">

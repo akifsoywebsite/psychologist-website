@@ -3,12 +3,22 @@ import { doc, getDoc } from "firebase/firestore";
 import { Clock, Mail, Map, MapPin, Phone, type LucideIcon } from "lucide-react";
 import { db } from "@/lib/firebase";
 import type { ContactContent } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 import SocialLinks from "@/components/shared/social-links";
 
+const title = "Əlaqə | Murad Akifsoy";
+const description =
+  "Murad Akifsoy ilə əlaqə saxlamaq üçün telefon, e-poçt, ünvan və sosial media vasitələri.";
+
 export const metadata: Metadata = {
-  title: "Əlaqə | Murad Akifsoy",
-  description:
-    "Murad Akifsoy ilə əlaqə saxlamaq üçün telefon, e-poçt, ünvan və sosial media vasitələri.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${SITE_URL}/elaqe`,
+    images: ["/murad-a.png"],
+  },
 };
 
 interface ContactMethod {
@@ -76,8 +86,8 @@ export default async function ContactPage() {
             Mənimlə Əlaqə Saxlayın
           </h1>
           <p className="mt-4 text-muted-foreground">
-            Sual və təkliflərinizi gözləyirəm. Aşağıdakı əlaqə
-            vasitələrindən istənilən biri ilə mənə müraciət edə bilərsiniz.
+            Sual və təkliflərinizi gözləyirəm. Aşağıdakı əlaqə vasitələrindən
+            istənilən biri ilə mənə müraciət edə bilərsiniz.
           </p>
         </div>
 

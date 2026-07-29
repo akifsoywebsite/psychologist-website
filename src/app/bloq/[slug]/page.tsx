@@ -16,6 +16,7 @@ import { cache } from "react";
 import sanitizeHtml from "sanitize-html";
 import { db } from "@/lib/firebase";
 import type { Blog, Category } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 
 const monthNames = [
   "Yanvar",
@@ -92,9 +93,18 @@ export async function generateMetadata({
 
   if (!blog) return {};
 
+  const title = `${blog.title} | Murad Akifsoy`;
+  const image = blog.coverImage || "/murad-a.png";
+
   return {
-    title: `${blog.title} | Murad Akifsoy`,
+    title,
     description: blog.excerpt,
+    openGraph: {
+      title,
+      description: blog.excerpt,
+      url: `${SITE_URL}/bloq/${blog.slug}`,
+      images: [image],
+    },
   };
 }
 
@@ -103,6 +113,19 @@ export default async function BlogPostPage({ params }: PageProps) {
   const blog = await getBlog(slug);
 
   if (!blog || blog.status === "draft") notFound();
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: blog.title,
+    datePublished: blog.createdAt.toISOString(),
+    image: blog.coverImage || `${SITE_URL}/murad-a.png`,
+    description: blog.excerpt,
+    author: {
+      "@type": "Person",
+      name: "Murad Akif oğlu Heydərov (Akifsoy)",
+    },
+  };
 
   const categories = await getCategories();
   const categoryName =
@@ -118,102 +141,110 @@ export default async function BlogPostPage({ params }: PageProps) {
       : null;
 
   return (
-    <main className="flex flex-1 flex-col bg-background">
-      <div className="mx-auto w-full max-w-3xl px-4 py-16 md:px-8 md:py-24">
-        <Link
-          href="/bloq"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
-        >
-          <ArrowLeft size={16} />
-          Bütün məqalələr
-        </Link>
-
-        <h1 className="mt-6 font-serif text-3xl font-bold text-foreground md:text-4xl">
-          {blog.title}
-        </h1>
-
-        <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-[var(--radius)] bg-accent">
-          {blog.coverImage ? (
-            <Image
-              src={blog.coverImage}
-              alt={blog.title}
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <Newspaper className="text-primary" size={56} />
-            </div>
-          )}
-          <span className="absolute bottom-3 left-3 z-10 w-fit rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">
-            {categoryName}
-          </span>
-        </div>
-
-        <p className="mt-4 text-sm text-muted-foreground">
-          {formatDate(blog.createdAt)}
-        </p>
-
-        <div
-          className="blog-content mt-8"
-          dangerouslySetInnerHTML={{
-            __html: sanitizeHtml(blog.content, {
-              allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-                "img",
-                "h2",
-                "h3",
-              ]),
-              allowedAttributes: {
-                ...sanitizeHtml.defaults.allowedAttributes,
-                img: ["src", "alt", "width", "height"],
-              },
-            }),
-          }}
-        />
-
-        <div className="mt-12 flex justify-center">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <main className="flex flex-1 flex-col bg-background">
+        <div className="mx-auto w-full max-w-3xl px-4 py-16 md:px-8 md:py-24">
           <Link
             href="/bloq"
-            className="rounded-[var(--radius)] border border-border bg-card px-6 py-3 text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
           >
-            Bütün Məqalələrə Qayıt
+            <ArrowLeft size={16} />
+            Bütün məqalələr
           </Link>
-        </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 border-t border-border pt-8 md:grid-cols-2">
-          {prevBlog ? (
-            <Link
-              href={`/bloq/${prevBlog.slug}`}
-              className="flex flex-col gap-2 rounded-[var(--radius)] border border-border bg-card p-6 transition-opacity hover:opacity-80"
-            >
-              <span className="text-xs font-semibold tracking-wide text-muted-foreground">
-                ÖNCƏKİ
-              </span>
-              <span className="line-clamp-2 font-serif text-lg text-foreground md:text-xl">
-                {prevBlog.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
+          <h1 className="mt-6 font-serif text-3xl font-bold text-foreground md:text-4xl">
+            {blog.title}
+          </h1>
 
-          {nextBlog ? (
+          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-[var(--radius)] bg-accent">
+            {blog.coverImage ? (
+              <Image
+                src={blog.coverImage}
+                alt={blog.title}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <Newspaper className="text-primary" size={56} />
+              </div>
+            )}
+            <span className="absolute bottom-3 left-3 z-10 w-fit rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">
+              {categoryName}
+            </span>
+          </div>
+
+          <p className="mt-4 text-sm text-muted-foreground">
+            {formatDate(blog.createdAt)}
+          </p>
+
+          <div
+            className="blog-content mt-8"
+            dangerouslySetInnerHTML={{
+              __html: sanitizeHtml(blog.content, {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+                  "img",
+                  "h2",
+                  "h3",
+                ]),
+                allowedAttributes: {
+                  ...sanitizeHtml.defaults.allowedAttributes,
+                  img: ["src", "alt", "width", "height"],
+                },
+              }),
+            }}
+          />
+
+          <div className="mt-12 flex justify-center">
             <Link
-              href={`/bloq/${nextBlog.slug}`}
-              className="flex flex-col gap-2 rounded-[var(--radius)] border border-border bg-card p-6 text-right transition-opacity hover:opacity-80"
+              href="/bloq"
+              className="rounded-[var(--radius)] border border-border bg-card px-6 py-3 text-foreground transition-colors hover:bg-accent"
             >
-              <span className="text-xs font-semibold tracking-wide text-muted-foreground">
-                SONRAKİ
-              </span>
-              <span className="line-clamp-2 font-serif text-lg text-foreground md:text-xl">
-                {nextBlog.title}
-              </span>
+              Bütün Məqalələrə Qayıt
             </Link>
-          ) : (
-            <div />
-          )}
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 border-t border-border pt-8 md:grid-cols-2">
+            {prevBlog ? (
+              <Link
+                href={`/bloq/${prevBlog.slug}`}
+                className="flex flex-col gap-2 rounded-[var(--radius)] border border-border bg-card p-6 transition-opacity hover:opacity-80"
+              >
+                <span className="text-xs font-semibold tracking-wide text-muted-foreground">
+                  ÖNCƏKİ
+                </span>
+                <span className="line-clamp-2 font-serif text-lg text-foreground md:text-xl">
+                  {prevBlog.title}
+                </span>
+              </Link>
+            ) : (
+              <div />
+            )}
+
+            {nextBlog ? (
+              <Link
+                href={`/bloq/${nextBlog.slug}`}
+                className="flex flex-col gap-2 rounded-[var(--radius)] border border-border bg-card p-6 text-right transition-opacity hover:opacity-80"
+              >
+                <span className="text-xs font-semibold tracking-wide text-muted-foreground">
+                  SONRAKİ
+                </span>
+                <span className="line-clamp-2 font-serif text-lg text-foreground md:text-xl">
+                  {nextBlog.title}
+                </span>
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

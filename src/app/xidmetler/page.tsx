@@ -5,11 +5,21 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { db } from "@/lib/firebase";
 import type { Service } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
+
+const title = "Xidmətlər | Murad Akifsoy";
+const description =
+  "Uşaqların və yeniyetmələrin inkişafına dəstək olmaq üçün təklif etdiyim peşəkar psixoloji xidmətlər.";
 
 export const metadata: Metadata = {
-  title: "Xidmətlər | Murad Akifsoy",
-  description:
-    "Uşaqların və yeniyetmələrin inkişafına dəstək olmaq üçün təklif etdiyim peşəkar psixoloji xidmətlər.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: `${SITE_URL}/xidmetler`,
+    images: ["/murad-a.png"],
+  },
 };
 
 async function getServices(): Promise<Service[]> {
