@@ -41,6 +41,9 @@ export const metadata: Metadata = {
     description,
     images: ["/murad-a.png"],
   },
+  verification: {
+    google: "xT3pR8ejF9DYWx4QKQUtk18TRPbekadC1YvGx0QkWyE",
+  },
 };
 
 // TODO: populate sameAs with the psychologist's social media URLs once
