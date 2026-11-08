@@ -11,6 +11,7 @@ import {
   FileText,
   LayoutDashboard,
   LogOut,
+  Megaphone,
   Menu,
   Newspaper,
   X,
@@ -22,6 +23,7 @@ const navLinks: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/idare", label: "Ana Səhifə", icon: LayoutDashboard },
   { href: "/idare/xidmetler", label: "Xidmətlər", icon: Briefcase },
   { href: "/idare/bloqlar", label: "Bloqlar", icon: Newspaper },
+  { href: "/idare/xeberler", label: "Xəbərlər", icon: Megaphone },
   { href: "/idare/mezmun", label: "Sayt Məzmunu", icon: FileText },
 ];
 

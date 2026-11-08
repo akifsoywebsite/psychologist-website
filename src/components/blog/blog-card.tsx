@@ -26,14 +26,16 @@ export default function BlogCard({
   blog,
   className = "",
   hidden = false,
+  basePath = "/bloq",
 }: {
   blog: Blog;
   className?: string;
   hidden?: boolean;
+  basePath?: string;
 }) {
   return (
     <Link
-      href={`/bloq/${blog.slug}`}
+      href={`${basePath}/${blog.slug}`}
       aria-hidden={hidden || undefined}
       tabIndex={hidden ? -1 : undefined}
       className={`flex flex-col overflow-hidden rounded-[var(--radius)] border border-border bg-card shadow-sm transition-shadow hover:shadow-md ${className}`}

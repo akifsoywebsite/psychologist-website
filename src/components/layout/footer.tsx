@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/", label: "Ana Səhifə" },
   { href: "/haqqimda", label: "Haqqımda" },
   { href: "/xidmetler", label: "Xidmətlər" },
+  { href: "/xeberler", label: "Xəbərlər" },
   { href: "/bloq", label: "Bloq" },
   { href: "/elaqe", label: "Əlaqə" },
 ];

@@ -9,9 +9,13 @@ const PAGE_SIZE = 6;
 export default function BlogList({
   blogs,
   categories,
+  basePath = "/bloq",
+  emptyMessage = "Bu kateqoriyada hələ məqalə yoxdur.",
 }: {
   blogs: Blog[];
   categories: Category[];
+  basePath?: string;
+  emptyMessage?: string;
 }) {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -60,13 +64,18 @@ export default function BlogList({
 
       {filteredBlogs.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">
-          Bu kateqoriyada hələ məqalə yoxdur.
+          {emptyMessage}
         </p>
       ) : (
         <>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {visibleBlogs.map((blog) => (
-              <BlogCard key={blog.id} blog={blog} className="w-full" />
+              <BlogCard
+                key={blog.id}
+                blog={blog}
+                basePath={basePath}
+                className="w-full"
+              />
             ))}
           </div>
 

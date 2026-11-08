@@ -27,6 +27,14 @@ export interface Category {
   slug: string;
 }
 
+// News items share the exact shape of blog posts but live in the
+// separate "news" collection.
+export type NewsItem = Blog;
+
+// News categories share the Category shape but live in the separate
+// "newsCategories" collection.
+export type NewsCategory = Category;
+
 export interface HeroContent {
   eyebrow: string;
   fullName: string;
